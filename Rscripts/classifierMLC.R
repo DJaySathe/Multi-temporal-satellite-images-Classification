@@ -1,5 +1,5 @@
 library(e1071)
-dataset = read.csv("../TrainingData/ValidationData/ValidationData-2015-04-19.csv")
+dataset = read.csv("ValidationData-2015-04-19.csv")
 dataset = dataset[,-1]
 shuffleVec = sample(nrow(dataset),nrow(dataset))
 testVector <- sample(nrow(dataset),nrow(dataset)*0.2)
@@ -13,7 +13,7 @@ trainData = trainData[,-c(1,2)]
 testData = testData[,-c(1,2)]
 rownames(trainData) = NULL
 rownames(testData) = NULL
-image1.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
+image2.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
 table(predict(image1.MLCmodel,testData[,-1]),testData[,1])
 err = sum(predict(image1.MLCmodel,testData[,-1])!=testData[,1])
 acc=err/nrow(testData)
@@ -26,7 +26,7 @@ save(image1.MLCmodel,file = "image1.MLCmodel.rda")
 # 3  0  0  6  0
 # 4  0  0  0  7
 
-accuracyTestData = read.csv("../TrainingData/AccuracyTestingData/AccuracyData-2015-12-31.csv")
+accuracyTestData = read.csv("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/AccuracyTestingData/AccuracyData-2015-12-31.csv")
 accuracyTestData = accuracyTestData[,-c(1,2,3)]
 head(accuracyTestData)
 rownames(accuracyTestData) = NULL
@@ -56,7 +56,7 @@ prediction = predict(model.logistic,testData[,-1],"probs")
 # Code for saving the classifier on each image after validation.
 
 library(e1071)
-dataset = read.csv("../TrainingData/ValidationData/ValidationData-2015-04-19.csv") #open the image data
+dataset = read.csv("ValidationData-2015-04-19.csv") #open the image data
 dataset = dataset[,-1]
 # shuffle dataset for cross-validation
 shuffleVec = sample(nrow(dataset),nrow(dataset))
