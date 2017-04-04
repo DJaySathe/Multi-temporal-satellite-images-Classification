@@ -42,22 +42,11 @@ print(1-acc)
 
 
 #trying logistic regression
-
-model.logistic = glm(as.factor(trainData$Class)~.,data=trainData,family= binomial(link="logit"))
-
-library(nnet)
-model.logistic = multinom(trainData$Class~.,data=trainData)
-prediction = predict(model.logistic,testData[,-1],"probs")
-
-
-
-
-
 # Code for saving the classifier on each image after validation.
-
+setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/ImageClassification/Multi-temporal-Classification-of-satellite-images/TrainingData/Corrected Data")
 library(e1071)
-dataset = read.csv("ValidationData-2015-04-19.csv") #open the image data
-dataset = dataset[,-1]
+dataset = read.csv("ValidationData-2016-03-20.csv") #open the image data
+dataset = dataset[,-c(1,2,3)]
 # shuffle dataset for cross-validation
 shuffleVec = sample(nrow(dataset),nrow(dataset))
 dataset = dataset[shuffleVec,]
@@ -80,8 +69,8 @@ for(i in seq(0,k-1,1)){
 crossvalidationError = crossvalidationError/k
 model = naiveBayes(as.factor(dataset$Class)~.,data=dataset)
 
-image1.MLCmodel = list(model,crossvalidationError)
-save(image1.MLCmodel,file = "image1.MLCmodel.rda") #save the model and the error results rename the file according to the image
+image4.MLCmodel = list(model,crossvalidationError)
+save(image4.MLCmodel,file = "image4.MLCmodel.rda") #save the model and the error results rename the file according to the image
 
 image2.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
 table(predict(image1.MLCmodel,testData[,-1]),testData[,1])
