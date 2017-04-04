@@ -5,6 +5,13 @@ dataset1=read.csv("ValidationData-2015-04-19.csv")
 dataset2=read.csv("ValidationData-2015-12-31.csv")
 dataset3=read.csv("ValidationData-2016-01-16.csv")
 dataset4=read.csv("ValidationData-2016-03-20.csv")
+
+setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/AccuracyTestingData")
+dataset1=read.csv("AccuracyData-2015-04-19.csv")
+dataset2=read.csv("AccuracyData-2015-12-31.csv")
+dataset3=read.csv("AccuracyData-2016-01-16.csv")
+dataset4=read.csv("AccuracyData-2016-03-20.csv")
+
 dataset1 = dataset1[,-c(1,2,3)]
 dataset2 = dataset2[,-c(1,2,3)]
 dataset3 = dataset3[,-c(1,2,3)]
@@ -36,7 +43,12 @@ bmaPrediction <- function(sample,i){
   w2 = 1 - w2
   w3 = 1 - w3
   w4 = 1 - w4
-  print(paste("Weights:",w1,w2,w3,w4))
+  
+  #print(w1)
+  #print(w2)
+  #print(w3)
+  #print(w4)
+  #print(paste("Weights:",w1,w2,w3,w4))
   p1 = data.frame(predict(image1.BMAmodel.LogWeighted[[1]],sample[1,-1],type="raw"))*w1
   p2 = data.frame(predict(image2.BMAmodel.LogWeighted[[1]],sample[2,-1],type="raw"))*w2
   p3 = data.frame(predict(image3.BMAmodel.LogWeighted[[1]],sample[3,-1],type="raw"))*w3
@@ -59,3 +71,11 @@ for (i in seq(1,nrow(outputDataFrame),1)) {
   outputDataFrame[i,10] = class
 }
 sum(outputDataFrame[,1]==outputDataFrame[,10])/nrow(outputDataFrame)
+
+# Mean accuracy of 4 models: 0.8958333
+
+#Normal BMA Acc=Trainset
+#0.9289617
+
+#Normal BMA Accuracytest set
+#0.9111111

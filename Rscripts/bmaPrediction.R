@@ -53,3 +53,7 @@ for (i in seq(1,nrow(outputDataFrame),1)) {
   outputDataFrame[i,10] = class
 }
 sum(outputDataFrame[,1]==outputDataFrame[,10])/nrow(outputDataFrame)
+
+#average accuracy
+averageAccuracy = (1 - image1.BMAmodel.LogWeighted[[2]] + 1 - image2.BMAmodel.LogWeighted[[2]] + 1 - image3.BMAmodel.LogWeighted[[2]] + 1- image4.BMAmodel.LogWeighted[[2]])/4
+#0.8958333

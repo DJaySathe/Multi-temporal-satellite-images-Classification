@@ -21,12 +21,10 @@ plotBandsPerClass = function(class1Data,title)
 
 class1Data = originalData[originalData$Class==1,]
 plotBandsPerClass(class1Data,"Class 1: Open Lands")
-class2Data = originalData[originalData$Class==2,]
-plotBandsPerClass(class2Data,"Class 2: Settlements")
-class3Data = originalData[originalData$Class==3,]
-plotBandsPerClass(class3Data,"Class 3: Vegetation")
-class4Data = originalData[originalData$Class==4,]
-plotBandsPerClass(class4Data,"Class 4: Water bodies")
+class1Data = originalData[originalData$Class==2,]
+plotBandsPerClass(class1Data,"Class 2: Settlements")
+class1Data = originalData[originalData$Class==3,]
+plotBandsPerClass(class1Data,"Class 3: Vegetation")
 
 #compare band one in all classes:
 
