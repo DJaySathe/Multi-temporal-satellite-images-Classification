@@ -1,12 +1,12 @@
 
-calculateProb <- function(classData, dataPoint){
+calculateProb <- function(classData, dataPoint, classPriori){
   # create covariance matrix of data
   covariance = cov(classData)
   # compute means of all the columns
   mean = colMeans(classData)
   
   # calculate probability
-  prob = (exp(-(as.matrix(dataPoint-mean))%*%solve(covariance)%*%(t(dataPoint-mean))))/sqrt(det(covariance))
+  prob = (exp(-(as.matrix(dataPoint-mean))%*%solve(covariance)%*%(t(dataPoint-mean))))*classPriori/sqrt(det(covariance))
   print(prob)
   
   return(prob)
@@ -16,24 +16,24 @@ predict <- function(bandsWithClass, tData){
   prediction = c()
   # seperate out data based on class assignment
   class1Data = bandsWithClass[bandsWithClass$Class == 1,][,-1]
-  class1Prob = nrow(class1Data)/nrow(bandsWithClass)
+  class1Priori = nrow(class1Data)/nrow(bandsWithClass)
   class2Data = bandsWithClass[bandsWithClass$Class == 2,][,-1]
-  class2Prob = nrow(class2Data)/nrow(bandsWithClass)
+  class2Priori = nrow(class2Data)/nrow(bandsWithClass)
   class3Data = bandsWithClass[bandsWithClass$Class == 3,][,-1]
-  class3Prob = nrow(class3Data)/nrow(bandsWithClass)
+  class3Priori = nrow(class3Data)/nrow(bandsWithClass)
   class4Data = bandsWithClass[bandsWithClass$Class == 4,][,-1]
-  class4Prob = nrow(class4Data)/nrow(bandsWithClass)
+  class4Priori = nrow(class4Data)/nrow(bandsWithClass)
   
   for (i in c(1:nrow(tData))){
   
     # campute all class probabilities
-    class1Prob = calculateProb(class1Data, tData[i,])
+    class1Prob = calculateProb(class1Data, tData[i,], class1Priori)
     print(class1Prob)
-    class2Prob = calculateProb(class2Data, tData[i,])
+    class2Prob = calculateProb(class2Data, tData[i,], class2Priori)
     print(class2Prob)
-    class3Prob = calculateProb(class3Data, tData[i,])
+    class3Prob = calculateProb(class3Data, tData[i,], class3Priori)
     print(class3Prob)
-    class4Prob = calculateProb(class4Data, tData[i,])
+    class4Prob = calculateProb(class4Data, tData[i,], class4Priori)
     print("###class 4###")
     print(class4Prob)
     finalClass = 1;
