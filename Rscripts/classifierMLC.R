@@ -45,7 +45,7 @@ print(1-acc)
 # Code for saving the classifier on each image after validation.
 setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/ImageClassification/Multi-temporal-Classification-of-satellite-images/TrainingData/Corrected Data")
 library(e1071)
-dataset = read.csv("ValidationData-2016-03-20.csv") #open the image data
+dataset = read.csv("ValidationData-2015-12-31.csv") #open the image data
 dataset = dataset[,-c(1,2,3)]
 # shuffle dataset for cross-validation
 shuffleVec = sample(nrow(dataset),nrow(dataset))
@@ -69,10 +69,10 @@ for(i in seq(0,k-1,1)){
 crossvalidationError = crossvalidationError/k
 model = naiveBayes(as.factor(dataset$Class)~.,data=dataset)
 
-image4.MLCmodel = list(model,crossvalidationError)
-save(image4.MLCmodel,file = "image4.MLCmodel.rda") #save the model and the error results rename the file according to the image
+image2.MLCmodel = list(model,crossvalidationError)
+save(image2.MLCmodel,file = "image2.MLCmodel.rda") #save the model and the error results rename the file according to the image
 
-image2.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
+image3.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
 table(predict(image1.MLCmodel,testData[,-1]),testData[,1])
 err = sum(predict(image1.MLCmodel,testData[,-1])!=testData[,1])
 acc=err/nrow(testData)

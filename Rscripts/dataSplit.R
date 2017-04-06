@@ -1,7 +1,8 @@
-
-#accuracyTestData = sample(nrow(dataset),nrow(dataset)*0.2)
 set.seed(100)
-accuracyDataVector = sample(nrow(dataset),nrow(dataset)*0.2)
+
+#accuracyDataVector = sample(nrow(dataset),nrow(dataset)*0.2)
+temp = read.csv("AccuracyData-2015-04-19.csv")
+accuracyDataVector = temp$X.1
 
 setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/ImageClassification/Multi-temporal-Classification-of-satellite-images/TrainingData/Corrected Data")
 dataset = read.csv("2015-04-19.csv")
