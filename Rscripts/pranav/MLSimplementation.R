@@ -4,11 +4,8 @@ calculateProb <- function(classData, dataPoint, classPriori){
   covariance = cov(classData)
   # compute means of all the columns
   mean = colMeans(classData)
-  
   # calculate probability
   prob = (exp(-(as.matrix(dataPoint-mean))%*%solve(covariance)%*%(t(dataPoint-mean))))*classPriori/sqrt(det(covariance))
-  print(prob)
-  
   return(prob)
 }
 
@@ -28,14 +25,14 @@ predict <- function(bandsWithClass, tData){
   
     # campute all class probabilities
     class1Prob = calculateProb(class1Data, tData[i,], class1Priori)
-    print(class1Prob)
+    #print(class1Prob)
     class2Prob = calculateProb(class2Data, tData[i,], class2Priori)
-    print(class2Prob)
+    #print(class2Prob)
     class3Prob = calculateProb(class3Data, tData[i,], class3Priori)
-    print(class3Prob)
+    #print(class3Prob)
     class4Prob = calculateProb(class4Data, tData[i,], class4Priori)
-    print("###class 4###")
-    print(class4Prob)
+    #print("###class 4###")
+    #print(class4Prob)
     finalClass = 1;
     finalProb = class1Prob
     if(class2Prob > finalProb){
@@ -58,7 +55,59 @@ predict <- function(bandsWithClass, tData){
 
 library(MASS)
 # set work directory as the location of the script
-dataset = read.csv("../../TrainingData/ValidationData/ValidationData-2015-04-19.csv")
+setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-temporal-Classification-of-satellite-images/Rscripts")
+
+dataset = read.csv("../TrainingData/Corrected Data/ValidationData-2015-04-19.csv")
+dataset = dataset[,-c(1,2,3)]
+# shuffle dataset for cross-validation
+shuffleVec = sample(nrow(dataset),nrow(dataset))
+dataset = dataset[shuffleVec,]
+
+crossvalidationError = 0
+k=10
+for(i in seq(0,k-1,1)){
+  testVector = seq(1,nrow(dataset)%/%k)
+  testVector = testVector + nrow(dataset)%/%k*i
+  testData = dataset[testVector,]
+  trainData = dataset[-testVector,]
+  
+  prediction = predict(trainData, testData[,-1])
+  temp.err = (sum(prediction != testData$Class)/nrow(testData))
+  #temp.model = naiveBayes(as.factor(trainData$Class)~.,data=trainData)
+  #temp.predictions = predict(temp.model,testData[,-1])
+  #tmp.err = sum(temp.predictions!=testData[,1])/nrow(testData)
+  #print(table(predict(temp.model,testData[,-1]),testData[,1]))
+  print(temp.err)
+  crossvalidationError = crossvalidationError+temp.err
+}
+print(crossvalidationError/10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dataset = read.csv("../../TrainingData/Corrected Data/ValidationData-2015-04-19.csv")
 
 # create a test vector after shuffling the data
 shuffleVec = sample(nrow(dataset),nrow(dataset))
