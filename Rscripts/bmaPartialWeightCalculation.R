@@ -1,6 +1,6 @@
 library(e1071)
 
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/ValidationData")
+setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/Corrected Data")
 dataset1=read.csv("ValidationData-2015-04-19.csv")
 dataset2=read.csv("ValidationData-2015-12-31.csv")
 dataset3=read.csv("ValidationData-2016-01-16.csv")
@@ -10,7 +10,7 @@ dataset2 = dataset2[,-c(1,2,3)]
 dataset3 = dataset3[,-c(1,2,3)]
 dataset4 = dataset4[,-c(1,2,3)]
 
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/Rscripts")
+setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/Rscripts/models")
 load("image1.MLCmodel.rda")
 load("image2.MLCmodel.rda")
 load("image3.MLCmodel.rda")
@@ -50,10 +50,10 @@ saveModel <- function(model,dataset,filename){
   head(image.probs)
   datasetWithProbs = cbind(dataset,image.probs)
   head(datasetWithProbs)
-  w = calculateRelativeWeight(datasetWithProbs)
+  w = calculateLogWeight(datasetWithProbs)
   print(w)
-  image4.BMAmodel.RelativeLogWeighted = list(model[[1]],model[[2]],w)
-  save(image4.BMAmodel.RelativeLogWeighted,file=filename)
+  image1.BMAmodel.LogWeighted = list(model[[1]],model[[2]],w)
+  save(image1.BMAmodel.LogWeighted,file=filename)
 }
 
-saveModel(image4.MLCmodel,dataset4,'image4.BMAmodel.RelativeLogWeighted.rda')
+saveModel(image1.MLCmodel,dataset1,'image1.BMAmodel.LogWeighted.rda')
