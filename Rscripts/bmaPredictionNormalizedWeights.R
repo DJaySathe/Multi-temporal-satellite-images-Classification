@@ -1,23 +1,20 @@
 library(e1071)
+# load training data not really necessary
+dataset1=read.csv("../Data/Training/ValidationDataImage1.csv")
+dataset2=read.csv("../Data/Training/ValidationDataImage2.csv")
+dataset3=read.csv("../Data/Training/ValidationDataImage3.csv")
+dataset4=read.csv("../Data/Training/ValidationDataImage4.csv")
 
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/ValidationData")
-dataset1=read.csv("ValidationData-2015-04-19.csv")
-dataset2=read.csv("ValidationData-2015-12-31.csv")
-dataset3=read.csv("ValidationData-2016-01-16.csv")
-dataset4=read.csv("ValidationData-2016-03-20.csv")
-
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/AccuracyTestingData")
-dataset1=read.csv("AccuracyData-2015-04-19.csv")
-dataset2=read.csv("AccuracyData-2015-12-31.csv")
-dataset3=read.csv("AccuracyData-2016-01-16.csv")
-dataset4=read.csv("AccuracyData-2016-03-20.csv")
+# load testing data
+dataset1=read.csv("../Data/Testing/AccuracyDataImage1.csv")
+dataset2=read.csv("../Data/Testing/AccuracyDataImage2.csv")
+dataset3=read.csv("../Data/Testing/AccuracyDataImage3.csv")
+dataset4=read.csv("../Data/Testing/AccuracyDataImage4.csv")
 
 dataset1 = dataset1[,-c(1,2,3)]
 dataset2 = dataset2[,-c(1,2,3)]
 dataset3 = dataset3[,-c(1,2,3)]
 dataset4 = dataset4[,-c(1,2,3)]
-
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/Rscripts")
 
 load("image1.BMAmodel.LogWeighted.rda")
 load("image2.BMAmodel.LogWeighted.rda")

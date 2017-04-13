@@ -1,5 +1,5 @@
 library(e1071)
-dataset = read.csv("ValidationData-2015-04-19.csv")
+dataset = read.csv("../Data/Training/ValidationDataImage1.csv")
 dataset = dataset[,-1]
 shuffleVec = sample(nrow(dataset),nrow(dataset))
 testVector <- sample(nrow(dataset),nrow(dataset)*0.2)
@@ -43,9 +43,9 @@ print(1-acc)
 
 #trying logistic regression
 # Code for saving the classifier on each image after validation.
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/ImageClassification/Multi-temporal-Classification-of-satellite-images/TrainingData/Corrected Data")
+#setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/ImageClassification/Multi-temporal-Classification-of-satellite-images/TrainingData/Corrected Data")
 library(e1071)
-dataset = read.csv("ValidationData-2015-12-31.csv") #open the image data
+dataset = read.csv("../Data/Training/ValidationDataImage1.csv") #open the image data
 dataset = dataset[,-c(1,2,3)]
 # shuffle dataset for cross-validation
 shuffleVec = sample(nrow(dataset),nrow(dataset))
@@ -69,8 +69,8 @@ for(i in seq(0,k-1,1)){
 crossvalidationError = crossvalidationError/k
 model = naiveBayes(as.factor(dataset$Class)~.,data=dataset)
 
-image2.MLCmodel = list(model,crossvalidationError)
-save(image2.MLCmodel,file = "image2.MLCmodel.rda") #save the model and the error results rename the file according to the image
+image1.MLCmodel = list(model,crossvalidationError)
+save(image1.MLCmodel,file = "image1.MLCmodel.rda") #save the model and the error results rename the file according to the image
 
 image3.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
 table(predict(image1.MLCmodel,testData[,-1]),testData[,1])
