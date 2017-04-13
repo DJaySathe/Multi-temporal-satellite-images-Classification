@@ -19,7 +19,7 @@ for i in range(0,bands):
     band.append(currentBand)
     data.append(currentBand.ReadAsArray(0,0,cols,rows))
 
-class myThread (threading.Thread):
+class ReadFile (threading.Thread):
     def __init__(self, threadID, name,x,rangex):
         threading.Thread.__init__(self)
         self.threadID = threadID
@@ -29,15 +29,15 @@ class myThread (threading.Thread):
         print
 
     def run(self):
-        print_time(self.name, self.x,self.rangex)
+        printBandValue(self.name, self.x,self.rangex)
 
-def print_time(threadName, x,rangex):
-    for i in range(x,x+rangex):
-        for j in range(0, rows):
-            for k in range(0,bands):
-                print data[k][i,j],
+def printBandValue(threadName, x,rangex):
+    for xcod in range(x,x+rangex):
+        for ycod in range(0, rows):
+            for bandNumber in range(0,bands):
+                print data[bandNumber][xcod,ycod],
             print "\n"
 
 
 for i in range(0,21):
-    myThread(1,"thread"+str(i),100*i,100).start()
+    ReadFile(1,"thread"+str(i),100*i,100).start()
