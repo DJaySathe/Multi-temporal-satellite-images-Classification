@@ -26,7 +26,7 @@ save(image1.MLCmodel,file = "image1.MLCmodel.rda")
 # 3  0  0  6  0
 # 4  0  0  0  7
 
-accuracyTestData = read.csv("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-Temporal-Classification/TrainingData/AccuracyTestingData/AccuracyData-2015-12-31.csv")
+accuracyTestData = read.csv("../Data/Testing/AccuracyDataImage1.csv")
 accuracyTestData = accuracyTestData[,-c(1,2,3)]
 head(accuracyTestData)
 rownames(accuracyTestData) = NULL
@@ -43,7 +43,6 @@ print(1-acc)
 
 #trying logistic regression
 # Code for saving the classifier on each image after validation.
-#setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/ImageClassification/Multi-temporal-Classification-of-satellite-images/TrainingData/Corrected Data")
 library(e1071)
 dataset = read.csv("../Data/Training/ValidationDataImage1.csv") #open the image data
 dataset = dataset[,-c(1,2,3)]
