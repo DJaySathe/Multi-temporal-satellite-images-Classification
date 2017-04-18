@@ -53,6 +53,14 @@ class MLC:
       predictions.append(self.classes[np.argmax(probs)])
     return predictions
 
+  def predictSingle(self, testX):
+    probs=[]
+    for j in range(len(self.classes)):
+      t = np.matrix(testX)
+      probs.append(self.calcProb(t, j))
+    return(self.classes[np.argmax(probs)])
+
+
   def score(self, predictions, actual):
     accuracy = sum(predictions == actual)/float(len(actual))
     return accuracy
@@ -67,6 +75,8 @@ if __name__ == "__main__":
   #data.drop(cor, inplace=True, axis=1)
   X = data.iloc[:,1:]
   y = data['Class']
+  model = MLC()
+  model.fit(X, y)
 
   accuracyTestData = pd.read_csv("../Data/Testing/AccuracyDataImage4.csv")
   cols = accuracyTestData.columns
@@ -75,8 +85,6 @@ if __name__ == "__main__":
   Xtest = accuracyTestData.iloc[:,1:]
   ytest = accuracyTestData['Class']
 
-  model = MLC()
-  model.fit(X, y)
 
   preds = model.predict(Xtest)
   accuracy = model.score(preds, ytest)
