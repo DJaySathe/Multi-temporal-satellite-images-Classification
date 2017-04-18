@@ -1,5 +1,5 @@
 import pandas as pd
-from numpy.random import *
+from numpy.random import choice
 import numpy as np
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 
