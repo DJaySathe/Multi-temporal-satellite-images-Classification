@@ -2,7 +2,7 @@ import threading
 import gdal
 import pandas as pd
 import numpy as np
-import pickle
+import time
 from MLC import MLC
 from matplotlib import pyplot as plt
 
@@ -18,8 +18,8 @@ imageBands = imageDataset.RasterCount
 imageDriver = imageDataset.GetDriver().LongName
 print imageCols,imageRows,imageBands,imageDriver
 
-output=np.zeros(shape=(imageRows,imageCols))
-outputt=np.zeros(shape=(imageRows,imageCols))
+output=np.zeros(shape=(imageRows,imageCols,3))
+outputt=np.zeros(shape=(imageRows,imageCols,3))
 
 data = pd.read_csv('../Data/Training/ValidationDataImage4.csv')
 cols = data.columns
@@ -31,6 +31,7 @@ y = data['Class']
 model = MLC()
 model.fit(X, y)
 
+colorCom=[[139,69,19],[139,141,122],[34,139,34],[0,0,255]]
 
 imageBand=[]
 datasetData=[]
@@ -61,19 +62,19 @@ def printBandValue(threadName, x,rangex):
             if len(np.where(l==0)[0])==8:
                 continue
             preds = model.predictSingle(l)
-            output[ycod,xcod]=preds*40
-            outputt[ycod,xcod]=200 if preds == 1 or preds ==3 else preds *40
+            output[ycod,xcod]=colorCom[preds-1]
+            outputt[ycod,xcod]=colorCom[0] if preds == 1 or preds ==3 else colorCom[preds-1]
 
-
-for i in range(1,20):
-    t=ReadFile(1,"thread"+str(i),100*i,100)
+millis = int(round(time.time() * 1000))
+for i in range(1,40):
+    t=ReadFile(1,"thread"+str(i),50*i,50)
     t.start()
     t.join()
+
+print int(round(time.time())*1000)-millis
+
 plt.imshow(output, interpolation='nearest')
 plt.show()
 plt.imshow(outputt, interpolation='nearest')
 plt.legend()
 plt.show()
-
-#red is both 1 and 3 orange is 4 and blue is 1
-#blue is 1,green is 2,blue is 3,red is 4
