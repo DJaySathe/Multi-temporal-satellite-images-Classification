@@ -74,3 +74,6 @@ plt.show()
 plt.imshow(outputt, interpolation='nearest')
 plt.legend()
 plt.show()
+
+#red is both 1 and 3 orange is 4 and blue is 1
+#blue is 1,green is 2,blue is 3,red is 4
