@@ -9,6 +9,7 @@ class MLCFast:
     self.classes = None
     self.means = []
     self.covs = []
+    self.predProbs = []
     return
 
   def compute_apriori (self, df):
@@ -47,7 +48,7 @@ class MLCFast:
     likelihood = np.exp(-likelihood)/np.sqrt(np.linalg.det(cv))
     return prior*likelihood
 
-  def predict(self, testX):
+  def predict(self, testX, type='default'):
     N = len(testX)
     x = np.empty([len(testX),len(self.classes)])
     probList = pd.DataFrame(x)
@@ -57,12 +58,17 @@ class MLCFast:
       prob = np.array(prob).reshape(len(testX),1)
       prob = pd.DataFrame(prob)
       probList[j] = prob
-
-    predIndex = np.argmax(np.matrix(probList), axis=1)
-
-    predictions = list(pd.DataFrame(np.array(self.classes)[predIndex]).iloc[:,0])
-
-    return predictions
+    
+    self.predProbs = probList
+    if (type == 'default'):
+      predIndex = np.argmax(np.matrix(probList), axis=1)
+      predictions = list(pd.DataFrame(np.array(self.classes)[predIndex]).iloc[:,0])
+      return predictions
+    elif (type == 'raw'):
+      return probList
+    else:
+      print ('Invalid type. Can be either default or raw')
+    return None
 
   def score(self, predictions, actual):
     accuracy = sum(predictions == actual)/float(len(actual))
@@ -70,7 +76,8 @@ class MLCFast:
 
 
 if __name__ == "__main__":
-  data = pd.read_csv('../Data/Training/ValidationDataImage1.csv')
+  imageNumber = 4
+  data = pd.read_csv('../Data/Training/ValidationDataImage'+str(imageNumber)+'.csv')
   cols = data.columns
   data.drop(cols[[0,1,2]], inplace=True, axis=1)
   cor = ['Blue', 'Red', 'SWNIR_1']
@@ -78,7 +85,7 @@ if __name__ == "__main__":
   X = data.iloc[:,1:]
   y = data['Class']
 
-  accuracyTestData = pd.read_csv("../Data/Testing/AccuracyDataImage1.csv")
+  accuracyTestData = pd.read_csv('../Data/Testing/AccuracyDataImage'+str(imageNumber)+'.csv')
   cols = accuracyTestData.columns
   accuracyTestData.drop(cols[[0,1,2]], inplace=True, axis=1)
   #accuracyTestData.drop(cor, inplace=True, axis=1)
@@ -89,10 +96,9 @@ if __name__ == "__main__":
   model.fit(X, y)
 
   preds = model.predict(Xtest)
-
   accuracy = model.score(preds, ytest)
   print accuracy
 
-#  with open('../TrainedModels/MLC_Image1.pkl','wb') as f:
-#    pickle.dump(model,f)
+  with open('../TrainedModels/MLC_Image'+str(imageNumber)+'.pkl','wb') as f:
+    pickle.dump(model,f)
 
