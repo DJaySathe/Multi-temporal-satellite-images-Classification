@@ -3,7 +3,7 @@ import numpy as np
 import pickle
 
 
-class MLC:
+class MLCFast:
   def __init__(self):
     self.priorProb = []
     self.classes = None
@@ -17,7 +17,7 @@ class MLC:
     return np.array(prior)
 
   def compute_means(self, df):
-    return np.matrix(np.mean(df, axis=0))
+    return np.mean(df, axis=0)
 
   def compute_covs (self, df):
     return np.matrix(np.cov(np.transpose(df)))
@@ -37,20 +37,31 @@ class MLC:
   def calcProb(self, X, c):
     prior = self.priorProb[c]
     cv = self.covs[c]
-    likelihood = float((X - self.means[c])*np.linalg.inv(cv)*np.transpose(X - self.means[c]))
+    T1 = np.matrix((X - self.means[c]))
+    T2 = np.linalg.inv(cv)
+    T3 = np.transpose(T1)
+    likelihood = (T1*T2)
+    likelihood = likelihood*T3
+    likelihood = np.diag(likelihood)
+
     likelihood = np.exp(-likelihood)/np.sqrt(np.linalg.det(cv))
     return prior*likelihood
 
-
   def predict(self, testX):
     N = len(testX)
-    predictions = []
-    for i in range(N):
-      probs = []
-      for j in range(len(self.classes)):
-        t = np.matrix(testX.loc[i])
-        probs.append(self.calcProb(t, j))
-      predictions.append(self.classes[np.argmax(probs)])
+    x = np.empty([len(testX),len(self.classes)])
+    probList = pd.DataFrame(x)
+    
+    for j in range(len(self.classes)):
+      prob = self.calcProb(testX, j)
+      prob = np.array(prob).reshape(len(testX),1)
+      prob = pd.DataFrame(prob)
+      probList[j] = prob
+
+    predIndex = np.argmax(np.matrix(probList), axis=1)
+
+    predictions = list(pd.DataFrame(np.array(self.classes)[predIndex]).iloc[:,0])
+
     return predictions
 
   def score(self, predictions, actual):
@@ -58,9 +69,8 @@ class MLC:
     return accuracy
 
 
-
 if __name__ == "__main__":
-  data = pd.read_csv('../Data/Training/ValidationDataImage4.csv')
+  data = pd.read_csv('../Data/Training/ValidationDataImage1.csv')
   cols = data.columns
   data.drop(cols[[0,1,2]], inplace=True, axis=1)
   cor = ['Blue', 'Red', 'SWNIR_1']
@@ -68,20 +78,21 @@ if __name__ == "__main__":
   X = data.iloc[:,1:]
   y = data['Class']
 
-  accuracyTestData = pd.read_csv("../Data/Testing/AccuracyDataImage4.csv")
+  accuracyTestData = pd.read_csv("../Data/Testing/AccuracyDataImage1.csv")
   cols = accuracyTestData.columns
   accuracyTestData.drop(cols[[0,1,2]], inplace=True, axis=1)
   #accuracyTestData.drop(cor, inplace=True, axis=1)
   Xtest = accuracyTestData.iloc[:,1:]
   ytest = accuracyTestData['Class']
 
-  model = MLC()
+  model = MLCFast()
   model.fit(X, y)
 
   preds = model.predict(Xtest)
+
   accuracy = model.score(preds, ytest)
   print accuracy
 
-  with open('../TrainedModels/MLC_Image1.pkl','wb') as f:
-    pickle.dump(model,f)
+#  with open('../TrainedModels/MLC_Image1.pkl','wb') as f:
+#    pickle.dump(model,f)
 

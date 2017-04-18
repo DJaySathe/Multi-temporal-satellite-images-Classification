@@ -41,10 +41,9 @@ print(1-acc)
 #4  0  0  1  7
 
 
-#trying logistic regression
 # Code for saving the classifier on each image after validation.
 library(e1071)
-dataset = read.csv("../Data/Training/ValidationDataImage1.csv") #open the image data
+dataset = read.csv("../Data/Training/ValidationDataImage3.csv") #open the image data
 dataset = dataset[,-c(1,2,3)]
 # shuffle dataset for cross-validation
 shuffleVec = sample(nrow(dataset),nrow(dataset))
@@ -73,7 +72,7 @@ save(image1.MLCmodel,file = "image1.MLCmodel.rda") #save the model and the error
 
 image3.MLCmodel = naiveBayes(as.factor(trainData$Class)~., data = trainData)
 table(predict(image1.MLCmodel,testData[,-1]),testData[,1])
-err = sum(predict(image1.MLCmodel,testData[,-1])!=testData[,1])
+err = sum(predict(model,testData[,-1])!=testData[,1])
 acc=err/nrow(testData)
 
 

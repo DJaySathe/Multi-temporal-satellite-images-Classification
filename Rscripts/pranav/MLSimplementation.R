@@ -55,9 +55,8 @@ predict <- function(bandsWithClass, tData){
 
 library(MASS)
 # set work directory as the location of the script
-setwd("C:/Users/Sanket Shahane/Google Drive/MS/ALDA/Project/Multi-temporal-Classification-of-satellite-images/Rscripts")
 
-dataset = read.csv("../TrainingData/Corrected Data/ValidationData-2015-04-19.csv")
+dataset = read.csv("../Data/Training/ValidationDataImage3.csv")
 dataset = dataset[,-c(1,2,3)]
 # shuffle dataset for cross-validation
 shuffleVec = sample(nrow(dataset),nrow(dataset))
@@ -83,58 +82,9 @@ for(i in seq(0,k-1,1)){
 print(crossvalidationError/10)
 
 
+#Testing Dataset
+testData = read.csv('../Data/Testing/AccuracyDataImage3.csv')
+testData = testData[,-c(1,2,3)]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-dataset = read.csv("../../TrainingData/Corrected Data/ValidationData-2015-04-19.csv")
-
-# create a test vector after shuffling the data
-shuffleVec = sample(nrow(dataset),nrow(dataset))
-testVector = sample(nrow(dataset),nrow(dataset)*0.2)
-testData = dataset[testVector,]
-
-# create traindata by eliminating the test data
-trainData = dataset[-testVector,]
-
-# delete first 4 columns and get only band values in bands variable
-bandsWithClass = trainData[-c(1,2,3)]
-
-# get predicted class list for test data
-prediction = predict(bandsWithClass, testData[-c(1,2,3,4)])
-
-# append this prediction to existing test data
-testData[["Prediction"]] <- prediction
-
-bands = bandsWithClass[-1]
-
-
-
-# create a map for parameters of individual bands
-#list = c()
-
-# iterate over each band and store the respective parameters in the map
-#for(i in names(bands))
-#  params = c(mean(bands$i), sd(bands$i))
-#  list$i = params
-  
+err = sum(predict(dataset,testData[,-1])!=testData[,1])
+acc=err/nrow(testData)
