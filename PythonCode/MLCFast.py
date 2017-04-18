@@ -10,6 +10,7 @@ class MLCFast:
     self.means = []
     self.covs = []
     self.predProbs = []
+    self.bmaweight = 0.0
     return
 
   def compute_apriori (self, df):
