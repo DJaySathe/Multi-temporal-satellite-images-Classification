@@ -14,14 +14,18 @@ cols = data.columns
 b = choice(range(len(data)), len(data))
 
 data = data.iloc[b].reset_index(drop=True)
-testIdx = np.random.rand(len(data)) < 0.2
 
-testData = data.iloc[testIdx].reset_index(drop=True)
-trainData = data[~testIdx].reset_index(drop=True)
+cor = ['Blue', 'Red', 'SWNIR_1']
+data.drop(cor, inplace=True, axis=1)
+#testIdx = np.random.rand(len(data)) < 0.2
+
+#testData = data.iloc[testIdx].reset_index(drop=True)
+#trainData = data[~testIdx].reset_index(drop=True)
+trainData = data
 
 cols = trainData.columns
 trainData.drop(cols[[0,1]], axis=1, inplace=True)
-testData.drop(cols[[0,1]], axis=1, inplace=True)
+#testData.drop(cols[[0,1]], axis=1, inplace=True)
 
 cols = trainData.columns
 counts = trainData['Class'].value_counts(sort=False)
@@ -31,8 +35,8 @@ image1MLCmodel = MultinomialNB(class_prior = np.array(priorProb))
 X = trainData[cols[1:]]
 y = trainData['Class']
 image1MLCmodel.fit(X, y)
-predictions = image1MLCmodel.predict(testData[cols[1:]])
-image1MLCmodel.score(testData[cols[1:]], testData['Class'])
+predictions = image1MLCmodel.predict(trainData[cols[1:]])
+print image1MLCmodel.score(trainData[cols[1:]], trainData['Class'])
 
 
 # Accuracy on 'AccuracyTestData'
@@ -40,7 +44,8 @@ image1MLCmodel.score(testData[cols[1:]], testData['Class'])
 accuracyTestData = pd.read_csv("../Data/Testing/AccuracyDataImage1.csv")
 cols = accuracyTestData.columns
 accuracyTestData.drop(cols[[0,1,2]], axis=1, inplace=True)
+accuracyTestData.drop(cor, inplace=True, axis=1)
 accuracyTestData = accuracyTestData.reset_index(drop=True)
 cols = accuracyTestData.columns
 predictions = image1MLCmodel.predict(accuracyTestData[cols[1:]])
-image1MLCmodel.score(accuracyTestData[cols[1:]], accuracyTestData['Class'])
+print image1MLCmodel.score(accuracyTestData[cols[1:]], accuracyTestData['Class'])

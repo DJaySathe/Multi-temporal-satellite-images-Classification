@@ -27,7 +27,7 @@ cols = trainData.columns
 counts = trainData['Class'].value_counts(sort=False)
 priorProb = counts/len(trainData)
 
-image1MLCmodel = GaussianNB()
+image1MLCmodel = GaussianNB(class_prior = np.array(priorProb))
 X = trainData[cols[1:]]
 y = trainData['Class']
 image1MLCmodel.fit(X, y)
