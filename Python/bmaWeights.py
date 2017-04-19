@@ -15,6 +15,13 @@ dataset2.drop(cols[[0,1,2]], inplace=True, axis=1)
 dataset3.drop(cols[[0,1,2]], inplace=True, axis=1)
 dataset4.drop(cols[[0,1,2]], inplace=True, axis=1)
 
+cor = ['Blue', 'Red', 'SWNIR_2']
+
+# dataset1.drop(cor, inplace=True, axis=1)
+# dataset2.drop(cor, inplace=True, axis=1)
+# dataset3.drop(cor, inplace=True, axis=1)
+# dataset4.drop(cor, inplace=True, axis=1)
+
 
 with open('../TrainedModels/MLC_Image1.pkl','r') as f:
   model1 = pickle.load(f)
@@ -37,7 +44,8 @@ def calculateLogWeight(dataset, probs):
   weight = 0
   for i in range(len(dataset)):
     index = int(dataset.iloc[i,0])
-    weight = weight + np.log(probs.iloc[i,(index-1)])
+    weight = weight + np.log(1.0+probs.iloc[i,(index-1)])
+    #print probs.iloc[i,(index-1)]
   return (weight)
 
 def saveModel(model,dataset,filename):
@@ -48,4 +56,4 @@ def saveModel(model,dataset,filename):
   with open(filename,'wb') as f:
     pickle.dump(model, f)
 
-saveModel(model1,dataset1,'../TrainedModels/image1.BMAmodel.LogWeighted.pkl')
+saveModel(model4,dataset4,'../TrainedModels/image4.BMAmodel.LogWeighted.pkl')
