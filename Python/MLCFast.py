@@ -49,6 +49,15 @@ class MLCFast:
     likelihood = np.exp(-likelihood)/np.sqrt(np.linalg.det(cv))
     return prior*likelihood
 
+  def normalizeProbs(self, probs):
+    probArray = np.array(probs)
+    sumProb = np.sum(probArray, axis=1)
+    sumProb = sumProb.reshape(len(sumProb),1)
+
+    out = np.divide(probs, sumProb)
+    return pd.DataFrame(out)
+
+
   def predict(self, testX, type='default'):
     L = len(testX)
     if len(np.matrix(testX)) == 1:
@@ -64,6 +73,9 @@ class MLCFast:
       probList[j] = prob
     
     self.predProbs = probList
+
+    probList = self.normalizeProbs(probList)
+
     if (type == 'default'):
       predIndex = np.argmax(np.matrix(probList), axis=1)
       predictions = list(pd.DataFrame(np.array(self.classes)[predIndex]).iloc[:,0])
@@ -78,13 +90,25 @@ class MLCFast:
     accuracy = sum(predictions == actual)/float(len(actual))
     return accuracy
 
+def class_accuracies (predictions, actual):
+  predictions = np.array(predictions)
+  actual = np.array(actual)
+  tab = pd.crosstab(predictions, actual)
+  l = len(tab)
+  accuracies = []
+  for i in range(l) :
+    acc = tab.iloc[i, i]/float(sum(actual == (i+1)))
+    accuracies.append(acc)
+
+  return accuracies
+
 
 if __name__ == "__main__":
   imageNumber = 4
   data = pd.read_csv('../Data/Training/ValidationDataImage'+str(imageNumber)+'.csv')
   cols = data.columns
   data.drop(cols[[0,1,2]], inplace=True, axis=1)
-  cor = ['Blue', 'Red', 'SWNIR_1']
+  cor = ['Blue', 'Red', 'SWNIR_2']
   #data.drop(cor, inplace=True, axis=1)
   X = data.iloc[:,1:]
   y = data['Class']
@@ -103,10 +127,12 @@ if __name__ == "__main__":
   accuracy = model.score(preds, ytest)
   print accuracy
 
-  #Predicting class for single sample
-  preds = model.predict(Xtest.iloc[0,], type='raw')
-  print preds
+  print class_accuracies(preds, ytest)
 
-  with open('../TrainedModels/MLC_Image'+str(imageNumber)+'.pkl','wb') as f:
-    pickle.dump(model,f)
+  #Predicting class for single sample
+  #preds = model.predict(Xtest.iloc[0,], type='raw')
+  #print preds
+
+#  with open('../TrainedModels/MLC_Image'+str(imageNumber)+'.pkl','wb') as f:
+#    pickle.dump(model,f)
 

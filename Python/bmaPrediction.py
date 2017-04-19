@@ -2,18 +2,19 @@ import numpy as np
 import pandas as pd
 import pickle
 from MLCFast import *
+import statsmodels.api as sm
 
 # load training data not really necessary
-dataset1 = pd.read_csv('../Data/Training/ValidationDataImage1.csv')
-dataset2 = pd.read_csv('../Data/Training/ValidationDataImage2.csv')
-dataset3 = pd.read_csv('../Data/Training/ValidationDataImage3.csv')
-dataset4 = pd.read_csv('../Data/Training/ValidationDataImage4.csv')
+# dataset1 = pd.read_csv('../Data/Training/ValidationDataImage1.csv')
+# dataset2 = pd.read_csv('../Data/Training/ValidationDataImage2.csv')
+# dataset3 = pd.read_csv('../Data/Training/ValidationDataImage3.csv')
+# dataset4 = pd.read_csv('../Data/Training/ValidationDataImage4.csv')
 
 # load testing data
-#dataset1=pd.read_csv("../Data/Testing/AccuracyDataImage1.csv")
-#dataset2=pd.read_csv("../Data/Testing/AccuracyDataImage2.csv")
-#dataset3=pd.read_csv("../Data/Testing/AccuracyDataImage3.csv")
-#dataset4=pd.read_csv("../Data/Testing/AccuracyDataImage4.csv")
+dataset1=pd.read_csv("../Data/Testing/AccuracyDataImage1.csv")
+dataset2=pd.read_csv("../Data/Testing/AccuracyDataImage2.csv")
+dataset3=pd.read_csv("../Data/Testing/AccuracyDataImage3.csv")
+dataset4=pd.read_csv("../Data/Testing/AccuracyDataImage4.csv")
 
 cols = dataset1.columns
 
@@ -22,6 +23,12 @@ dataset2.drop(cols[[0,1,2]], inplace=True, axis=1)
 dataset3.drop(cols[[0,1,2]], inplace=True, axis=1)
 dataset4.drop(cols[[0,1,2]], inplace=True, axis=1)
 
+cor = ['Blue', 'Red', 'SWNIR_2']
+
+# dataset1.drop(cor, inplace=True, axis=1)
+# dataset2.drop(cor, inplace=True, axis=1)
+# dataset3.drop(cor, inplace=True, axis=1)
+# dataset4.drop(cor, inplace=True, axis=1)
 
 with open('../TrainedModels/image1.BMAmodel.LogWeighted.pkl','r') as f:
   model1 = pickle.load(f)
@@ -38,26 +45,16 @@ def bmaPrediction(sample):
     print("error in input")
     return None
 
-  # sample weights
-  #w1 = -120
-  #w2 = -70
-  #w3 = -200
-  #w4 = -90
   w1 = model1.bmaweight
   w2 = model2.bmaweight
   w3 = model3.bmaweight
   w4 = model4.bmaweight
-
 
   s = float(w1+w2+w3+w4)
   w1 = w1/s
   w2 = w2/s
   w3 = w3/s
   w4 = w4/s
-  w1 = 1 - w1
-  w2 = 1 - w2
-  w3 = 1 - w3
-  w4 = 1 - w4
   
   p1 = pd.DataFrame(model1.predict(sample.iloc[0,1:], type='raw')*w1)
   p2 = pd.DataFrame(model2.predict(sample.iloc[0,1:], type='raw')*w2)
@@ -75,17 +72,14 @@ if __name__ == '__main__':
   outputDataFrame = dataset1
   predictions = []
   for i in range(len(outputDataFrame)):
+  #i = 0
     sample = pd.concat([dataset1.iloc[i,], dataset2.iloc[i,], dataset3.iloc[i,], dataset4.iloc[i,]], axis=1).transpose().reset_index(drop=True)
     c = bmaPrediction(sample)
     predictions.append(c)
-  print predictions
-  accuracy = sum(predictions == outputDataFrame['Class'])/len(predictions)
+  accuracy = sum(np.array(predictions) == np.array(outputDataFrame['Class'])) / float(len(predictions))
+  #tab = pd.crosstab(np.array(predictions), np.array(outputDataFrame['Class'])) 
+  #print len(tab)
   print accuracy
+  print class_accuracies(np.array(predictions), np.array(outputDataFrame['Class']))
 
-# Mean accuracy of 4 models: 0.8958333
 
-#Normal BMA Acc=Trainset
-#0.9289617
-
-#Normal BMA Accuracytest set
-#0.9111111
