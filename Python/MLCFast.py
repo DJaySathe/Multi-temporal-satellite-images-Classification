@@ -50,13 +50,16 @@ class MLCFast:
     return prior*likelihood
 
   def predict(self, testX, type='default'):
-    N = len(testX)
-    x = np.empty([len(testX),len(self.classes)])
+    L = len(testX)
+    if len(np.matrix(testX)) == 1:
+      L = 1
+
+    x = np.empty([L,len(self.classes)])
     probList = pd.DataFrame(x)
-    
+
     for j in range(len(self.classes)):
       prob = self.calcProb(testX, j)
-      prob = np.array(prob).reshape(len(testX),1)
+      prob = np.array(prob).reshape(L,1)
       prob = pd.DataFrame(prob)
       probList[j] = prob
     
@@ -99,6 +102,10 @@ if __name__ == "__main__":
   preds = model.predict(Xtest)
   accuracy = model.score(preds, ytest)
   print accuracy
+
+  #Predicting class for single sample
+  preds = model.predict(Xtest.iloc[0,], type='raw')
+  print preds
 
   with open('../TrainedModels/MLC_Image'+str(imageNumber)+'.pkl','wb') as f:
     pickle.dump(model,f)
