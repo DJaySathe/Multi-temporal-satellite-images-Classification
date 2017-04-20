@@ -18,8 +18,8 @@ class ReadFile (threading.Thread):
         self.name = name
         self.x = x
         self.rangex=rangex
-        self.output = np.zeros(shape=(imageRows, imageCols, 3))
-        self.outputt = np.zeros(shape=(imageRows, imageCols, 3))
+        self.output = output
+        self.outputt = outputt
         self.imageRows=imageRows
         self.imageCols=imageCols
         self.datasetData=datasetData
@@ -78,10 +78,13 @@ def classIdentification(imagelocation,datalocation):
     output = np.zeros(shape=(imageRows, imageCols, 3))
     outputt = np.zeros(shape=(imageRows, imageCols, 3))
 
-    for i in range(1,40):
+    for i in range(1,41):
         t=ReadFile(1,"thread"+str(i),50*i,50,output,outputt,imageRows,imageCols,datasetData,model,imageBands)
         t.start()
         t.join()
+
+    fig=plt.figure(0)
+    fig.canvas.set_window_title(imagelocation)
     plt.imshow(output, interpolation='nearest')
     plt.show()
     plt.imshow(outputt, interpolation='nearest')
