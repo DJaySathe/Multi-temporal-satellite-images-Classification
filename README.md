@@ -1,49 +1,49 @@
 # Multi-temporal-Classification-of-satellite-images
 
-New data (generated new train and test data)
+New data (generated new train and test data)<br/>
 
-Test accuracies for MLC without any feature selection:
-#1- 88.63
-#2- 79.54
-#3- 86.36
-#4- 95.45
+Test accuracies for MLC without any feature selection:<br/>
+#1- 88.63<br/>
+#2- 79.54<br/>
+#3- 86.36<br/>
+#4- 95.45<br/>
+<br/>
+BMA weights without any feature selection:<br/>
+119.82<br/>
+115.02<br/>
+118.98<br/>
+119.94<br/>
+<br/>
+BMA test accuracy without any feature selection:<br/>
+90.9<br/>
+<br/><br/>
 
-BMA weights without any feature selection:
-119.82
-115.02
-118.98
-119.94
-
-BMA test accuracy without any feature selection:
-90.9
-
-
-PCA results:
-Test accuracies for MLC:
-#1- 88.63
-#2- 81.82
-#3- 90.91
-#4- 90.91
-
-BMA weights:
-118.39
-113.44
-113.21
-118.50
-
-BMA test accuracy:
-90.9
+PCA results:<br/>
+Test accuracies for MLC:<br/>
+#1- 88.63<br/>
+#2- 81.82<br/>
+#3- 90.91<br/>
+#4- 90.91<br/>
+<br/>
+BMA weights:<br/>
+118.39<br/>
+113.44<br/>
+113.21<br/>
+118.50<br/>
+<br/>
+BMA test accuracy:<br/>
+90.9<br/>
 
 
-Feature subset:
-Test accuracies for MLC:
-#1- 93.18
-#2- 88.64
-#3- 93.18
-#4- 97.72
-
-Class Accuracies
-	#1	#2	#3	#4
+Feature subset:<br/>
+Test accuracies for MLC:<br/>
+#1- 93.18<br/>
+#2- 88.64<br/>
+#3- 93.18<br/>
+#4- 97.72<br/>
+<br/>
+Class Accuracies<br/>
+	#1	#2	#3	#4<br/>
 #1	92.85	100	90	88.88
 #2	100	100	90	77.77
 #3	92.85	100	90	88.88	
