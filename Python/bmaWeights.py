@@ -38,7 +38,7 @@ Y4 = dataset4['Class']
 def calculateWeight (dataset, probs):
   weight = 1
   for i in range(len(dataset)):
-    index = int(dataset.iloc[i,0])
+    index = int(dataset.iloc[i])
     weight = weight*probs.iloc[i,(index-1)]
   return (weight)
 
@@ -46,7 +46,7 @@ def calculateLogWeight(dataset, probs):
   weight = 0
   for i in range(len(dataset)):
     index = int(dataset.iloc[i])
-    weight = weight + np.log(probs.iloc[i,(index-1)])
+    weight = weight + np.log(1+probs.iloc[i,(index-1)])
     #print probs.iloc[i,(index-1)]
   return (weight)
 
