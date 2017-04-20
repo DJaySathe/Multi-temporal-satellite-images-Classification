@@ -43,11 +43,11 @@ Test accuracies for MLC:<br/>
 #4- 97.72<br/>
 <br/>
 Class Accuracies<br/>
-	#1	#2	#3	#4<br/>
-#1	92.85	100	90	88.88
-#2	100	100	90	77.77
-#3	92.85	100	90	88.88	
-#4	92.85	100	100	100
+	#1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+#1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	92.85&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	88.88&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+#2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	77.77&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+#3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	92.85&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	88.88&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>	
+#4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	92.85&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
 
 BMA weights:
 116.99
