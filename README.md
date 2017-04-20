@@ -43,7 +43,7 @@ Test accuracies for MLC:<br/>
 #4- 97.72<br/>
 <br/>
 Class Accuracies<br/>
-	#1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	#4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
 #1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	92.85&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	88.88&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
 #2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	77.77&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
 #3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	92.85&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	88.88&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>	
