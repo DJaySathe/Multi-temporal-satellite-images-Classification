@@ -70,10 +70,10 @@ def bmaPrediction2(sample1, sample2, sample3, sample4):
   w3 = w3/s
   w4 = w4/s
 
-  w1 = 1-w1
-  w2 = 1-w2
-  w3 = 1-w3
-  w4 = 1-w4
+  # w1 = 1-w1
+  # w2 = 1-w2
+  # w3 = 1-w3
+  # w4 = 1-w4
   
   p1 = pd.DataFrame(model1.predict(sample1, type='raw')*w1)
   p2 = pd.DataFrame(model2.predict(sample2, type='raw')*w2)
@@ -113,15 +113,15 @@ def bmaPrediction(sample):
   w3 = w3/s
   w4 = w4/s
 
-  w1 = 1-w1
-  w2 = 1-w2
-  w3 = 1-w3
-  w4 = 1-w4
+  # w1 = 1-w1
+  # w2 = 1-w2
+  # w3 = 1-w3
+  # w4 = 1-w4
   
   p1 = pd.DataFrame(model1.predict(sample.iloc[0,1:], type='raw')*w1)
-  p2 = pd.DataFrame(model2.predict(sample.iloc[0,1:], type='raw')*w2)
-  p3 = pd.DataFrame(model3.predict(sample.iloc[0,1:], type='raw')*w3)
-  p4 = pd.DataFrame(model4.predict(sample.iloc[0,1:], type='raw')*w4)
+  p2 = pd.DataFrame(model2.predict(sample.iloc[1,1:], type='raw')*w2)
+  p3 = pd.DataFrame(model3.predict(sample.iloc[2,1:], type='raw')*w3)
+  p4 = pd.DataFrame(model4.predict(sample.iloc[3,1:], type='raw')*w4)
   
   currProbabilities = pd.concat([p1, p2, p3, p4], axis=0).reset_index(drop=True)
 
