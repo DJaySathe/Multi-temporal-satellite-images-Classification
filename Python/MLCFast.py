@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import pickle
+import itertools as it
+import operator
 
 
 class MLCFast:
@@ -103,12 +105,16 @@ def class_accuracies (predictions, actual):
   return accuracies
 
 
-if __name__ == "__main__":
-  imageNumber = 4
+def saveModel(model, filename):
+  with open(filename,'wb') as f:
+    pickle.dump(model,f)
+
+def main1(imageNumber):
   data = pd.read_csv('../Data/Training/ValidationDataImage'+str(imageNumber)+'.csv')
   cols = data.columns
   data.drop(cols[[0,1,2]], inplace=True, axis=1)
-  cor = ['Blue', 'Red', 'SWNIR_2']
+  #cor = ['Blue', 'Red', 'SWNIR_2']
+  #cor = ['Cirrus']
   #data.drop(cor, inplace=True, axis=1)
   X = data.iloc[:,1:]
   y = data['Class']
@@ -117,6 +123,7 @@ if __name__ == "__main__":
   cols = accuracyTestData.columns
   accuracyTestData.drop(cols[[0,1,2]], inplace=True, axis=1)
   #accuracyTestData.drop(cor, inplace=True, axis=1)
+  #Xtest = accuracyTestData.iloc[:,1:]
   Xtest = accuracyTestData.iloc[:,1:]
   ytest = accuracyTestData['Class']
 
@@ -132,7 +139,58 @@ if __name__ == "__main__":
   #Predicting class for single sample
   #preds = model.predict(Xtest.iloc[0,], type='raw')
   #print preds
+  saveModel(model, '../TrainedModels/MLC/MLC_Image'+str(imageNumber)+'.pkl')
 
-#  with open('../TrainedModels/MLC_Image'+str(imageNumber)+'.pkl','wb') as f:
-#    pickle.dump(model,f)
+def main2(imageNumber):
+  #fselection = {1: [0,1,2,6,7], 2: [0,1,2,3,4,5,6,7], 3: [0,1,2,4,5,7], 4: [4,5,6,7]}
+  fselection = {1: [0,1,4,6,7], 2: [0,1,2,5,7], 3: [0,6], 4: [0,2,3,4,5,6,7]}
+  data = pd.read_csv('../Data/Training/ValidationDataImage'+str(imageNumber)+'.csv')
+  cols = data.columns
+  data.drop(cols[[0,1,2]], inplace=True, axis=1)
 
+  X = data.iloc[:,1:]
+  cols = X.columns
+  select = cols[fselection[imageNumber]]
+  X = X[select]
+  y = data['Class']
+
+  accuracyTestData = pd.read_csv('../Data/Testing/AccuracyDataImage'+str(imageNumber)+'.csv')
+  cols = accuracyTestData.columns
+  accuracyTestData.drop(cols[[0,1,2]], inplace=True, axis=1)
+
+  Xtest = accuracyTestData[select]
+  ytest = accuracyTestData['Class']
+
+  model = MLCFast()
+  model.fit(X, y)
+
+  preds = model.predict(Xtest)
+  accuracy = model.score(preds, ytest)
+  print accuracy
+  print class_accuracies(preds, ytest)
+
+  saveModel(model, '../TrainedModels/MLC/MLC_Image'+str(imageNumber)+'_FS.pkl')
+
+def main3(imageNumber):
+  data = pd.read_csv('../Data/Training/pcaImage'+str(imageNumber)+'.csv')
+  X = data.iloc[:,1:]
+  y = data['Class']
+
+  accuracyTestData = pd.read_csv('../Data/Testing/pcaTestImage'+str(imageNumber)+'.csv')
+  Xtest = accuracyTestData.iloc[:,1:]
+  ytest = accuracyTestData['Class']
+
+  model = MLCFast()
+  model.fit(X, y)
+
+  preds = model.predict(Xtest)
+  accuracy = model.score(preds, ytest)
+  print accuracy
+
+  print class_accuracies(preds, ytest)
+  saveModel(model, '../TrainedModels/MLC/MLC_Image_PCA'+str(imageNumber)+'.pkl')
+
+
+if __name__ == '__main__':
+  for i in range(1, 5):
+    main2(i)
