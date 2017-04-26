@@ -23,7 +23,8 @@ dataset2.drop(cols[[0,1,2]], inplace=True, axis=1)
 dataset3.drop(cols[[0,1,2]], inplace=True, axis=1)
 dataset4.drop(cols[[0,1,2]], inplace=True, axis=1)
 
-fselection = {1: [0,1,2,6,7], 2: [0,1,2,3,4,5,6,7], 3: [0,1,2,4,5,7], 4: [4,5,6,7]}
+#fselection = {1: [0,1,2,6,7], 2: [0,1,2,3,4,5,6,7], 3: [0,1,2,4,5,7], 4: [4,5,6,7]}
+fselection = {1: [0,1,4,6,7], 2: [0,1,2,5,7], 3: [0,6], 4: [0,2,3,4,5,6,7]}
 
 #cor = ['Blue', 'Red', 'SWNIR_2']
 
@@ -50,13 +51,13 @@ Y4 = dataset4['Class']
 
 def bmaPrediction2(sample1, sample2, sample3, sample4):
 
-  with open('../TrainedModels/image1.BMAmodelFS.LogWeighted.pkl','r') as f:
+  with open('../TrainedModels/BMA/image1.BMAmodelFS.LogWeighted.pkl','r') as f:
     model1 = pickle.load(f)
-  with open('../TrainedModels/image2.BMAmodelFS.LogWeighted.pkl','r') as f:
+  with open('../TrainedModels/BMA/image2.BMAmodelFS.LogWeighted.pkl','r') as f:
     model2 = pickle.load(f)
-  with open('../TrainedModels/image3.BMAmodelFS.LogWeighted.pkl','r') as f:
+  with open('../TrainedModels/BMA/image3.BMAmodelFS.LogWeighted.pkl','r') as f:
     model3 = pickle.load(f)
-  with open('../TrainedModels/image4.BMAmodelFS.LogWeighted.pkl','r') as f:
+  with open('../TrainedModels/BMA/image4.BMAmodelFS.LogWeighted.pkl','r') as f:
     model4 = pickle.load(f)
 
   w1 = model1.bmaweight
@@ -87,17 +88,7 @@ def bmaPrediction2(sample1, sample2, sample3, sample4):
   return c
 
 
-def bmaPrediction(sample):
-
-  with open('../TrainedModels/image1.BMAmodel.LogWeighted.pkl','r') as f:
-    model1 = pickle.load(f)
-  with open('../TrainedModels/image2.BMAmodel.LogWeighted.pkl','r') as f:
-    model2 = pickle.load(f)
-  with open('../TrainedModels/image3.BMAmodel.LogWeighted.pkl','r') as f:
-    model3 = pickle.load(f)
-  with open('../TrainedModels/image4.BMAmodel.LogWeighted.pkl','r') as f:
-    model4 = pickle.load(f)
-
+def bmaPrediction(sample, model1, model2, model3, model4):
   if (len(sample) != 4) :
     print("error in input")
     return None
@@ -148,11 +139,48 @@ def main2():
 
 # All attributes kept for modelling. Need to have appropriate mdoels saved in the folder.
 def main1():
+  with open('../TrainedModels/BMA/image1.BMAmodel.LogWeighted.pkl','r') as f:
+    model1 = pickle.load(f)
+  with open('../TrainedModels/BMA/image2.BMAmodel.LogWeighted.pkl','r') as f:
+    model2 = pickle.load(f)
+  with open('../TrainedModels/BMA/image3.BMAmodel.LogWeighted.pkl','r') as f:
+    model3 = pickle.load(f)
+  with open('../TrainedModels/BMA/image4.BMAmodel.LogWeighted.pkl','r') as f:
+    model4 = pickle.load(f)
+
   outputDataFrame = dataset1
   predictions = []
   for i in range(len(Y1)):
     sample = pd.concat([dataset1.iloc[i,], dataset2.iloc[i,], dataset3.iloc[i,], dataset4.iloc[i,]], axis=1).transpose().reset_index(drop=True)
-    c = bmaPrediction(sample)
+    c = bmaPrediction(sample, model1, model2, model3, model4)
+    predictions.append(c)
+  accuracy = sum(np.array(predictions) == np.array(outputDataFrame['Class'])) / float(len(predictions))
+  #tab = pd.crosstab(np.array(predictions), np.array(outputDataFrame['Class'])) 
+  #print len(tab)
+  print accuracy
+  print class_accuracies(np.array(predictions), np.array(Y1))
+
+def main3():
+  with open('../TrainedModels/BMA/pcaImage1.BMAmodel.LogWeighted.pkl','r') as f:
+    model1 = pickle.load(f)
+  with open('../TrainedModels/BMA/pcaImage2.BMAmodel.LogWeighted.pkl','r') as f:
+    model2 = pickle.load(f)
+  with open('../TrainedModels/BMA/pcaImage3.BMAmodel.LogWeighted.pkl','r') as f:
+    model3 = pickle.load(f)
+  with open('../TrainedModels/BMA/pcaImage4.BMAmodel.LogWeighted.pkl','r') as f:
+    model4 = pickle.load(f)
+
+  d1=pd.read_csv("../Data/Testing/pcaTestImage1.csv")
+  d2=pd.read_csv("../Data/Testing/pcaTestImage2.csv")
+  d3=pd.read_csv("../Data/Testing/pcaTestImage3.csv")
+  d4=pd.read_csv("../Data/Testing/pcaTestImage4.csv")
+
+
+  outputDataFrame = d1
+  predictions = []
+  for i in range(len(Y1)):
+    sample = pd.concat([d1.iloc[i,], d2.iloc[i,], d3.iloc[i,], d4.iloc[i,]], axis=1).transpose().reset_index(drop=True)
+    c = bmaPrediction(sample, model1, model2, model3, model4)
     predictions.append(c)
   accuracy = sum(np.array(predictions) == np.array(outputDataFrame['Class'])) / float(len(predictions))
   #tab = pd.crosstab(np.array(predictions), np.array(outputDataFrame['Class'])) 
@@ -162,5 +190,3 @@ def main1():
 
 if __name__ == '__main__':
   main2()
-
-
