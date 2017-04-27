@@ -78,10 +78,20 @@ def classIdentification(imagelocation,datalocation):
     output = np.zeros(shape=(imageRows, imageCols, 3))
     outputt = np.zeros(shape=(imageRows, imageCols, 3))
 
-    for i in range(1,41):
+    threads=[]
+
+    stime=time.time()
+
+    for i in range(0,41):
         t=ReadFile(1,"thread"+str(i),50*i,50,output,outputt,imageRows,imageCols,datasetData,model,imageBands)
+        threads.append(t)
         t.start()
-        t.join()
+#        t.join()
+
+    for i in range(1,41):
+        threads[i].join()
+
+    print time.time()-stime
 
     fig=plt.figure(0)
     fig.canvas.set_window_title(imagelocation)
@@ -97,15 +107,15 @@ if __name__ == '__main__':
     p1.start()
     p2 = Process(target=classIdentification, args=(
     "../satellite images/2016-01-16-AllBands-Clipped.tif", "../Data/Training/ValidationDataImage3.csv"))
-    p2.start()
+#    p2.start()
     p3 = Process(target=classIdentification, args=(
     "../satellite images/2015-12-31-AllBands-Clipped.tif", "../Data/Training/ValidationDataImage2.csv"))
-    p3.start()
+#    p3.start()
     p4 = Process(target=classIdentification, args=(
         "../satellite images/2015-04-19-AllBands-Clipped.tif", "../Data/Training/ValidationDataImage1.csv"))
-    p4.start()
+ #   p4.start()
 
     p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
+ #   p2.join()
+ #   p3.join()
+ #   p4.join()
