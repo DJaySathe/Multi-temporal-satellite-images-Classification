@@ -75,23 +75,27 @@ def loadImage(imagelocation,threadSize):
 
 
 class ReadFile (threading.Thread):
-    def __init__(self, threadID, name,output,outputt,datasetData):
+    def __init__(self, threadID, name,output,outputt,datasetData,size):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
         self.output = output
         self.outputt = outputt
         self.datasetData=datasetData
+        self.size=size
 
     def run(self):
-        computeClass(self.name,
-                     self.output, self.outputt, self.datasetData)
+        computeClass(self.threadID,
+                     self.output, self.outputt, self.datasetData,self.size)
 
-def computeClass(threadName, output, outputt, datasetData):
+def computeClass(threadID, output, outputt, datasetData,size):
     for ycod in range(0, len(datasetData[0][0])):
         if ycod%100==0:
             print ycod
         for xcod in range(0, len(datasetData[0][0][0])):
+            if xcod % 100 == 0:
+                print ycod,xcod
+
             l4=[]
             for iimage in range(0,4):
                 l = []
@@ -101,7 +105,7 @@ def computeClass(threadName, output, outputt, datasetData):
             l4=np.asarray(l4)
             if len(np.where(l4[0]==0)[0])==8:
                 continue
-            output[ycod,xcod]=colorCom[bmaPrediction2(l4[0],l4[1],l4[2],l4[3])]
+            output[ycod,size*threadID+xcod]=colorCom[bmaPrediction2(l4[0],l4[1],l4[2],l4[3])]
 #            outputt[ycod,xcod]=colorCom[0] if preds == 1 or preds ==3 else colorCom[preds-1]
 
 millis = int(round(time.time() * 1000))
@@ -128,7 +132,7 @@ def classIdentification(threadSize,imagelocation1,imagelocation2,imagelocation3,
         d.append(d2[i])
         d.append(d3[i])
         d.append(d4[i])
-        t=ReadFile(1,"thread"+str(i),output,outputt,d)
+        t=ReadFile(1,"thread"+str(i),output,outputt,d,threadSize)
         t.start()
         threads.append(t)
 
